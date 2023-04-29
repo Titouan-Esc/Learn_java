@@ -1,24 +1,15 @@
-import oscar.Cat;
-
-import java.util.ListIterator;
-import java.util.Stack;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class main {
     public static void main(String[] args) {
+        TreeMap<Integer, String> tm = new TreeMap<>();
 
-        Stack<Cat> group = new Stack<>();
+        tm.put(3, "Oscar");
+        tm.put(2, "Titouan");
+        tm.put(7, "Joachim");
 
-        Cat c1 = new Cat("Oscar");
-        Cat c2 = new Cat("Titouan");
-
-        group.push(c1);
-        group.push(c2);
-
-        ListIterator<Cat> lit = group.listIterator();
-
-        while (lit.hasNext())
-            lit.next().miaou();
-
-        group.peek().miaou();
+        for (Map.Entry<Integer, String> ent : tm.entrySet())
+            System.out.println("Key : " + ent.getKey() + " | Value : " + ent.getValue());
     }
 }
