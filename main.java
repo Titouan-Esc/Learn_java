@@ -1,42 +1,42 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 public class main {
+
+    public static void printList(List<?> li) {
+        for (Object o : li)
+            System.out.println("> " + o); 
+    } 
+
+
     public static void main(String[] args) {
-        Path fileSource = Paths.get("newFile.truc");
-        Path machinDir = Paths.get("machin");
-        Path fileDestination = machinDir.resolve("newFile.newTruc");
+        
+        Fruit f = new Fruit("Cerise");
+        Fruit f2 = new Fruit("Banane");
+        Fruit f3 = new Fruit("Mange");
 
-        try {
-            Files.move(fileSource, fileDestination);
-        } catch (IOException err) {
-            System.out.println(err.getMessage());
-        }
+        List<Fruit> lf = new ArrayList<>();
+        lf.add(f);
+        lf.add(f2);
+        lf.add(f3);
 
-        Path f = Paths.get("exemple.txt");
-        Charset c = Charset.forName("UTF-8");
+        Vegetable v = new Vegetable("Endive");
+        Vegetable v2 = new Vegetable("Poireau");
+        Vegetable v3 = new Vegetable("Patate");
 
-        StandardOpenOption mode = StandardOpenOption.DELETE_ON_CLOSE;
+        List<Vegetable> lv = new ArrayList<>();
+        lv.add(v);
+        lv.add(v2);
+        lv.add(v3);
 
-        try {
-            BufferedWriter bfw = Files.newBufferedWriter(f, c, mode);
-            BufferedReader bfr = Files.newBufferedReader(f);
-            String s = "Hello World";
+        printList(lv);
+        printList(lf);
+        // Basket<Fruit> bskF = new Basket(f);
 
-            bfw.write(s, 2, 5);
+        // System.out.println(bskF.getItem().getName());
 
-            System.out.println(bfr.readLine());
+        // Basket<Vegetable> bskV = new Basket(v);
 
-            bfr.close();
-            bfw.close();
-        } catch (IOException err) {
-            System.out.println(err.getMessage());
-        }
+        // System.out.println(bskV.getItem().getName());
     }
 }
