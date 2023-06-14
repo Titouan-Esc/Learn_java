@@ -1,42 +1,59 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class main {
+public class Main {
 
-    public static void printList(List<?> li) {
-        for (Object o : li)
-            System.out.println("> " + o); 
-    } 
+    public static void main(String []args) {
+//        ExecutorService ex = Executors.newSingleThreadExecutor();
+//        ExecutorService ex = Executors.newFixedThreadPool(4);
+        ExecutorService ex = Executors.newCachedThreadPool();
 
 
-    public static void main(String[] args) {
-        
-        Fruit f = new Fruit("Cerise");
-        Fruit f2 = new Fruit("Banane");
-        Fruit f3 = new Fruit("Mange");
+        Runnable task1 = () -> {
 
-        List<Fruit> lf = new ArrayList<>();
-        lf.add(f);
-        lf.add(f2);
-        lf.add(f3);
+            for (int i = 0; i < 5; i++) {
+                System.out.println(i);
 
-        Vegetable v = new Vegetable("Endive");
-        Vegetable v2 = new Vegetable("Poireau");
-        Vegetable v3 = new Vegetable("Patate");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {}
+            }
+        };
 
-        List<Vegetable> lv = new ArrayList<>();
-        lv.add(v);
-        lv.add(v2);
-        lv.add(v3);
+        Runnable task2 = () -> {
 
-        printList(lv);
-        printList(lf);
-        // Basket<Fruit> bskF = new Basket(f);
+            for (int i = 5; i < 9; i++) {
+                System.out.println(i);
 
-        // System.out.println(bskF.getItem().getName());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {}
+            }
+        };
 
-        // Basket<Vegetable> bskV = new Basket(v);
+        Future<String> fut1 = ex.submit(task1, "Je suis Jean et j'ai fini");
+        Future<String> fut2 = ex.submit(task2, "Je suis Enculé et j'ai fini");
 
-        // System.out.println(bskV.getItem().getName());
+        while (!fut1.isDone() || !fut2.isDone()) {
+            System.out.println("On attend...");
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {}
+        }
+
+        if (fut1.isDone()) {
+            try {
+                System.out.println(fut1.get());
+            } catch (Exception e) {}
+        } else if (fut2.isDone()) {
+            try {
+                System.out.println(fut2.get());
+            } catch (Exception e) {}
+        }
+
+        ex.shutdown();
     }
+    
 }
